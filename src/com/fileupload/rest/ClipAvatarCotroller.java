@@ -41,6 +41,25 @@ public class ClipAvatarCotroller {
 			e.printStackTrace();
 		}
 	}
+	@RequestMapping(value = "/clipUpload")
+	public void clipUpload1(HttpServletRequest request, HttpServletResponse response) {
+		String pathString = request.getRealPath("/");
+		MultipartHttpServletRequest mhr = (MultipartHttpServletRequest) request;
+		MultipartFile file = mhr.getFile("file");
+		try {
+			byte[] byt = file.getBytes();
+			File f = new File(pathString + File.separator + "upload");
+			if (!f.exists())
+				f.mkdirs();
+			FileOutputStream fis = new FileOutputStream(f.getPath() + File.separator + file.getOriginalFilename());
+			fis.write(byt);
+			fis.flush();
+			fis.close();
+			response.getOutputStream().print("/upload/" + file.getOriginalFilename());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@RequestMapping(value = "/crop_form")
 	public void crop_form(HttpServletRequest request, HttpServletResponse response) {
